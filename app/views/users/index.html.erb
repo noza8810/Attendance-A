@@ -1,0 +1,21 @@
+<% provide(:title, "ALL") %>
+
+<h1>ユーザー一覧</h1>
+
+<%= form_tag import_users_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "インポート" %>
+<% end %>
+<div class="col-md-10 col-md-offset-1">
+  <% @users.each do |user| %>
+    <p>
+      <%= user.name %><br>
+    | <%= link_to "削除", user, method: :delete, 
+          date: { confirm: "削除してよろしいですか？" }, 
+          class: "btn btn-md btn-primary" %>
+    </p>
+    <p class="well well-sm edit-background">
+      <%= link_to "編集", "#", class: "btn btn-lg btn-primary" %>  
+    </p>
+  <% end %>
+</div>

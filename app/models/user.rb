@@ -8,7 +8,7 @@ class User < ApplicationRecord
                    uniqueness: true   
   validates :affiliation, length: { in: 2..30 }, allow_blank: true
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 } 
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true 
   
   #渡された文字列のハッシュ値を返す
   def User.digest(string)
@@ -42,6 +42,24 @@ class User < ApplicationRecord
   # ユーザーのログイン情報を破棄する
   def forget
     update_attribute(:remember_digest, nil)
+  end
+  
+  #csv読み込み、DBに登録
+  def self.import(file)
+    CSV.foreach(file.path, headers: true) do |row|
+      # IDが見つかれば、レコードを呼び出し、見つからなければ、新しく作成
+      user = find_by(id: row["id"]) || new
+      # CSVからデータを取得し、設定する
+      user.attributes = row.to_hash.slice(*updatable_attributes)
+      # 保存する
+      user.save!
+    end
+    
+  end
+
+  # 更新を許可するカラムを定義
+  def self.updatable_attributes
+    ["id", "name", "email", "affiliation", "password"]
   end
 
 end

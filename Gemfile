@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails',        '~> 5.1.6'
 gem 'bcrypt' #パスワードのハッシュ化
 gem 'rails-i18n' #日本語化
+gem 'roo' #Excel, csvなど開くことができる
 gem 'bootstrap-sass'
 gem 'puma',         '~> 3.7'
 gem 'sass-rails',   '~> 5.0'
